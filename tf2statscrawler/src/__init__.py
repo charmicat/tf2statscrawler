@@ -58,14 +58,14 @@ class index:
 
                 currentClass = self.filledStats[stat].statByClass[classStats]
                 
-                if currentClass.statValue != 0:
+                if currentClass.statValue != -1:
                     content += "<tr><td>"
                     content += "<img src=\"http://steamcommunity.com/public/images/apps/440/"+classStats.lower()+".jpg\">"
                     content += "</td><td><br>"
                     
                     content += "<b>Class:  </b>" + classStats + "<br>"
                     content += "<b>User:   </b>" + currentClass.userName + "<br>"
-                    content += "<b>Points: </b>%s" % self.formatStatValue(currentClass.statValue) + "<br>"
+                    content += "<b>Points: </b>%s" % currentClass.statValue + "<br>"
                     content += "<b>URL:    </b><a href=\"" + currentClass.profileURL + "\">" + currentClass.profileURL + "</a><br>"
                     content += "<br>"
                     content += "</tr></td>"
@@ -78,12 +78,5 @@ class index:
             
         return content
     
-    def formatStatValue(self, value):
-        if type(value).__name__ != "int":
-            return time.strftime("%H:%M:%S", value)
-        else:
-            return value
-        
-        
 if __name__ == "__main__":
     app.run()
