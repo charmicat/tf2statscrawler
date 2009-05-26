@@ -27,7 +27,7 @@ class index:
                 selectedStats.append(i[tag])
             elif tag.startswith("class_"):
                 selectedClasses[i[tag]] = True
-            elif tag == "groupURL":          
+            elif tag == "groupURL":
                 self.groupURL = i[tag]
                 
         if len(selectedStats) < 1 or len(selectedClasses) < 1:
