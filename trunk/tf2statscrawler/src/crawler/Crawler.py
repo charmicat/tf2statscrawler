@@ -16,6 +16,9 @@ class Crawler:
                 
         self.divClasses = ",div.".join(selectedStats)
         
+        self.totalUsers = 0
+        self.totalUsersTF2 = 0
+        
         for stat in selectedStats:
             self.filledStats[stat] = ScoreContainer()
             
@@ -38,6 +41,10 @@ class Crawler:
         cssselector = CSSSelector("div.pageLinks a")
         multiplePages = cssselector.evaluate(page)
         
+        
+        # Problema: links nao estao todos aparentes <<  Page: 1 ... 3  4  5  6  7 ... 13 >>
+        # possivel solucao: dividir numero de jogadores por 51 = numero de paginas, isso é bom pra otimizacao
+
         for pages in multiplePages:
             pageNumber = pages.get('href')
             if not pageNumber in visited:
@@ -59,6 +66,8 @@ class Crawler:
 
     
     def getStatsFromUserProfile(self, URL, userName):
+        
+        self.totalUsers += 1
         statsURL = URL + "/stats/TF2"
         
         try:
@@ -66,6 +75,8 @@ class Crawler:
         except IOError:
             # Usuario nao tem TF2!
             return
+        
+        self.totalUsersTF2 += 1
         
         foundStats = dict()
         cssselector = CSSSelector('div.className,div.' + self.divClasses)
@@ -108,6 +119,8 @@ class Crawler:
 
     def printScore(self):
         print "Summary of stats for the group: " + self.URL
+        print "Total users: %s" % self.totalUsers
+        print "Total users who play TF2: %s" % self.totalUsersTF2
         print "\n"
         
         for stat in self.filledStats:
@@ -137,3 +150,4 @@ class Crawler:
             time = timedelta(minutes=int(toks[0]), seconds=int(toks[1]))
             
         return time
+

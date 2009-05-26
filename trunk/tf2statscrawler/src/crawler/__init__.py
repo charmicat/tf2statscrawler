@@ -12,8 +12,8 @@ def real_main ():
     
     
     c = Crawler(selectedStats, selectedClasses)
-    c.getStatsFromGroupProfile("http://steamcommunity.com/groups/mixaobr")
-#    c.getStatsFromGroupProfile("http://steamcommunity.com/groups/itsovergaming")
+#    c.getStatsFromGroupProfile("http://steamcommunity.com/groups/mixaobr")
+    c.getStatsFromGroupProfile("http://steamcommunity.com/groups/itsovergaming")
 #    c.getStatsFromGroupProfile("http://steamcommunity.com/groups/blogcontinue")
     
     c.printScore()
