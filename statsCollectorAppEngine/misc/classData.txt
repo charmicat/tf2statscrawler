@@ -1,0 +1,25 @@
+<classData>
+	<className>Medic</className>
+	<classIcon>
+		http://steamcommunity.com/public/images/gamestats/440/medic.jpg
+	</classIcon>
+	<playtimeSeconds>730215</playtimeSeconds>
+	<ipointsscored>52</ipointsscored>
+	<inumberofkills>7</inumberofkills>
+	<ikillassists>23</ikillassists>
+	<ipointcaptures>4</ipointcaptures>
+	<ipointdefenses>4</ipointdefenses>
+	<idamagedealt>1024</idamagedealt>
+	<ibuildingsdestroyed>2</ibuildingsdestroyed>
+	<idominations>3</idominations>
+	<irevenge>1</irevenge>
+	<inuminvulnerable>11</inuminvulnerable>
+	<iplaytime>1213</iplaytime>
+	<ihealthpointshealed>17572</ihealthpointshealed>
+</classData>
+
+What was being used on the scraping version:
+<ipointsscored>52</ipointsscored>
+<inumberofkills>7</inumberofkills>
+<idamagedealt>1024</idamagedealt>
+<iplaytime>1213</iplaytime> (seconds)

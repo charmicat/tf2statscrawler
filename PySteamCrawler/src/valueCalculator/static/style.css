@@ -1,0 +1,50 @@
+@charset "utf-8";
+
+/* CSS Document */
+body {
+	background-color: #333333;
+	color: #FFFFFF;
+	font-size: 12px;
+	margin: 10px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+form INPUT, hr {
+	border: thin solid #999999;
+	background-color: #333333;
+	color: #ffffff
+}
+
+.contentBody {
+	background-color: #282828;
+}
+
+td, tr {
+	margin: 10px;
+	text-align: left;
+	text-indent: 10px;
+}
+
+.title {
+	font-size: 24px;
+	font-weight: bold;
+	background-color: #252525;
+}
+
+.contentTable {
+	width: 50%;
+}
+
+.shadow {
+	background-color: #272727
+}
+
+a:link {
+	color: #999999;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #cccccc;
+	text-decoration: none
+}

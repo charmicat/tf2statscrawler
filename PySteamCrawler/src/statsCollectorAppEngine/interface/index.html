@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>TF2 Stats Crawler</title>
+<link href="static/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<table width="820" border="0" align="center" class="contentTable"
+	cellspacing="0" cellpadding="0">
+	<tr>
+		<td><img src="static/header_top_l.gif" align="left" width="100%"></td>
+		<td width="100%" class="title"></td>
+		<td><img src="static/header_top_r.gif" align="right" width="100%"></td>
+	</tr>
+	<tr class="title">
+		<td></td>
+		<td>
+		<div align="center">
+		<p><img src="static/logo.png" align="middle"</p>
+		</div>
+		</td>
+		<td></td>
+	</tr>
+	<tr class="shadow">
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr class="contentBody">
+		<td></td>
+		<td>
+		<div align="center">
+		<p>&nbsp;</p>
+		<form id="postStats" name="postStats" method="post" action=""
+			class="form">
+		<table width="200" border="0">
+			<tr align="left">
+				<td><label>Group URL _ <br />
+				<br />
+				<input type="text" name="groupURL" id="groupURL" size="100" /> </label><br />
+				<br />
+				</td>
+			</tr>
+			<tr align="left">
+				<td>Stats _<br />
+				<br />
+				{% for k, v in stats.items %}
+					<label><input type="checkbox" name="stat" value="{{ v }}" id="{{ v }}" /> {{ k }}</label> <br />
+				{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			<tr align="left">
+				<td>
+				<p>Classes _</p>
+				<p>
+				{% for i in classes %}
+					<label> <input type="checkbox" name="class" value="{{ i }}" id="{{ i }}" /> {{ i }}</label> <br />
+				{% endfor %}
+				</p>
+				</td>
+			</tr>
+			<tr align="center">
+				<td><label> <input type="submit" name="sendChoices"
+					id="sendChoices" value="Submit" /> </label></td>
+			</tr>
+		</table>
+		</form>
+		<br />
+		<br />
+		</div>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td width="22px"><img src="static/header_bott_l.gif"></td>
+		<td width="100%" class="contentBody"></td>
+		<td width="22px"><img src="static/header_bott_r.gif"></td>
+	</tr>
+</table>
+</body>
+</html>
