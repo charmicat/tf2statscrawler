@@ -27,44 +27,50 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 from google.appengine.ext.webapp import template
 
+
 class MainHandler(webapp.RequestHandler):
     def get(self):
         path = os.path.dirname(__file__) + '/interface/index.html'
-#        self.response.headers['Content-Type'] = 'text/plain'
-        self.response.write(unicode(template.render(path, {"stats":Constants.availableStats, "classes":Constants.availableClasses})))
-
+        #        self.response.headers['Content-Type'] = 'text/plain'
+        self.response.write(
+            unicode(template.render(path, {"stats": Constants.availableStats, "classes": Constants.availableClasses})))
 
     def post(self):
         groupURL = self.request.get("groupURL")
         selectedStats = self.request.get_all("stat")
         selectedClasses = self.request.get_all("class")
-        
+
         if len(selectedStats) < 1 or len(selectedClasses) < 1:
             self.response.write("<center>You need to select at least one Class and one Stat!</center><br>")
             return
-        
+
         if groupURL == "":
             self.response.out.write("<center>You need to specify a group URL!</center><br>")
             return
-        
+
         c = Collector(selectedStats, selectedClasses)
         filledStats = c.getStatsFromGroupProfile(groupURL)
-        
+
         path = os.path.dirname(__file__) + '/interface/result.html'
-        self.response.write(unicode(template.render(path, {"stats": filledStats, "groupURL":groupURL, "statsName":Constants.availableStatsText})))
+        self.response.write(unicode(template.render(path, {"stats": filledStats, "groupURL": groupURL,
+                                                           "statsName": Constants.availableStatsText})))
+
 
 class ResultHandler(webapp.RequestHandler):
-    
+
     def get(self):
         path = os.path.dirname(__file__) + '/interface/result.html'
-#        self.response.headers['Content-Type'] = 'text/plain'
+        #        self.response.headers['Content-Type'] = 'text/plain'
         self.response.write(unicode(template.render(path, Constants.availableStats)))
-        
+
+
 app = webapp.WSGIApplication([('/', MainHandler), ('/results', ResultHandler)],
-                                       debug=True)
+                             debug=True)
+
+
 def main():
-#     app = webapp.WSGIApplication([('/', MainHandler), ('/results', ResultHandler)],
-#                                        debug=True)
+    #     app = webapp.WSGIApplication([('/', MainHandler), ('/results', ResultHandler)],
+    #                                        debug=True)
     wsgiref.handlers.CGIHandler().run(app)
 
 

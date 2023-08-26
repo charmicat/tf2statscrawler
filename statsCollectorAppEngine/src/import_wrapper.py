@@ -14,8 +14,8 @@ except ImportError, e:
     warnings.filterwarnings('ignore',
                             message=r'Module .*? is being added to sys.path', append=True)
     # Make the appengine libs available if we want to use ipython or something.
-    sys.path.insert(0, '/home/luizautsch/Install/google_appengine')
-    sys.path.insert(0, '/home/luizautsch/Install/google_appengine/lib/yaml/lib')
+    sys.path.insert(0, '/home/talto/install/google-cloud-sdk/platform/google_appengine')
+    sys.path.insert(0, '/home/talto/install/google-cloud-sdk/platform/google_appengine/lib/yaml/lib')
     # We need to use __file__ to find the absolute path to the apps lib/ directory
     root = os.path.split(__file__)[0]
     
