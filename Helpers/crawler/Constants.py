@@ -1,8 +1,8 @@
-'''
+"""
 Created on Mar 2, 2011
 
 @author: luiza
-'''
+"""
 
 availableStats = {"Playtime": "playtimeSeconds",
                   "Points Scored": "ipointsscored",
@@ -17,6 +17,20 @@ availableStats = {"Playtime": "playtimeSeconds",
                   "Invulnerabilities": "inuminvulnerable",
                   "Playtime": "iplaytime",
                   "Health Points Healed": "ihealthpointshealed"}
+
+availableStatsText = {"playtimeSeconds": "Playtime",
+                      "ipointsscored": "Points Scored",
+                      "inumberofkills": "Number of Kills",
+                      "ikillassists": "Kill Assists",
+                      "ipointcaptures": "Point Captures",
+                      "ipointdefenses": "Point Defenses",
+                      "idamagedealt": "Damage Dealt",
+                      "ibuildingsdestroyed": "Buildings Destroyed",
+                      "idominations": "Dominations",
+                      "irevenge": "Revenges",
+                      "inuminvulnerable": "Invulnerabilities",
+                      "iplaytime": "Playtime",
+                      "ihealthpointshealed": "Health Points Healed"}
 
 availableClasses = ["Soldier",
                     "Spy",

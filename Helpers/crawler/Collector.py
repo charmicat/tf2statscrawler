@@ -2,10 +2,11 @@
 
 from datetime import timedelta
 
-import lxml
 import lxml.etree
+from google.appengine.api import urlfetch
 
-from .ScoreContainer import ScoreContainer
+import Constants
+from ScoreContainer import ScoreContainer
 
 
 # from lxml.html import parse
@@ -33,7 +34,9 @@ class Collector:
 
     def getStatsFromGroupProfile(self, URL):
         self.URL = URL
-        page = lxml.etree.parse(URL + "/memberslistxml/?xml=1", self.parser).getroot()
+
+        result = urlfetch.fetch(URL + "/memberslistxml/?xml=1")
+        page = lxml.etree.fromstring(result.content, self.parser)
 
         totalPages = int(page.find("totalPages").text)
 
@@ -45,7 +48,8 @@ class Collector:
             for userId in page.find("members"):
                 self.getStatsFromUserProfile(userId.text)
 
-            page = lxml.etree.parse((URL + "/memberslistxml/?xml=1&p=%d") % i, self.parser).getroot()
+            result = urlfetch.fetch((URL + "/memberslistxml/?xml=1&p=%d") % i)
+            page = lxml.etree.fromstring(result.content, self.parser)
 
         #        self.printScore()
 
@@ -58,39 +62,48 @@ class Collector:
     def getStatsFromUserProfile(self, Id):
         statsURL = ("http://steamcommunity.com/profiles/%s/stats/tf2/?xml=1") % Id
 
-        page = lxml.etree.parse(statsURL, self.parser).getroot()
+        try:
+            result = urlfetch.fetch(statsURL)
+            page = lxml.etree.fromstring(result.content, self.parser)
 
-        privacyState = page.find("privacyState")
+            privacyState = page.find("privacyState")
 
-        if privacyState == None or privacyState.text == "private":
-            # User doesn't have TF2 or profile is private
-            return
+            if privacyState == None or privacyState.text == "private":
+                # User doesn't have TF2 or profile is private
+                return
 
-        self.totalUsersTF2 += 1
+            self.totalUsersTF2 += 1
 
-        allClassesData = page.findall("stats/classData")
+            allClassesData = page.findall("stats/classData")
 
-        for classData in allClassesData:
-            className = classData.find("className").text
-            classIcon = classData.find("classIcon").text
-            if className not in self.onlySelectedClasses:
-                # class must not be parsed
-                continue
+            for classData in allClassesData:
+                className = classData.find("className").text
+                classIcon = classData.find("classIcon").text
+                if className not in self.onlySelectedClasses:
+                    # class must not be parsed
+                    continue
 
-            for stat in self.selectedStats:
-                statData = int(classData.find(stat).text)
-                if self.filledStats.scoreByStat[stat][className].statValue < statData:
-                    self.filledStats.scoreByStat[stat][className].statValue = statData
+                for stat in self.selectedStats:
+                    try:
+                        statData = int(classData.find(stat).text)
+                        if self.filledStats.scoreByStat[stat][className].statValue < statData:
+                            self.filledStats.scoreByStat[stat][className].statValue = statData
 
-                    self.filledStats.scoreByStat[stat][className].iconURL = classIcon
+                            self.filledStats.scoreByStat[stat][className].iconURL = classIcon
+                            self.filledStats.scoreByStat[stat][className].statText = Constants.availableStatsText[stat]
 
-                    profileURL = ("http://steamcommunity.com/profiles/%s/?xml=1") % Id
-                    profile = lxml.etree.parse(profileURL, self.parser).getroot()
+                            result = urlfetch.fetch(("http://steamcommunity.com/profiles/%s/?xml=1") % Id)
+                            profile = lxml.etree.fromstring(result.content, self.parser)
 
-                    name = profile.find("steamID").text
-                    self.filledStats.scoreByStat[stat][className].userName = name
-                    self.filledStats.scoreByStat[stat][className].profileURL = (
-                                                                                   "http://steamcommunity.com/profiles/%s") % Id
+                            name = profile.find("steamID").text
+                            self.filledStats.scoreByStat[stat][className].userName = name
+                            self.filledStats.scoreByStat[stat][className].profileURL = (
+                                                                                           "http://steamcommunity.com/profiles/%s") % Id
+                    except AttributeError:
+                        pass
+
+        except lxml.etree.XMLSyntaxError:
+            print(statsURL)
 
     def printScore(self):
         print("Summary of stats for the group: " + self.URL)

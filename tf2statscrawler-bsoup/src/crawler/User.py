@@ -5,8 +5,8 @@ class User:
         self.userName = userName
         self.profileURL = profileURL
         self.className = className
-        
+
         self.statValue = statValue
-        
+
     def __repr__(self):
-        return "User "+self.userName+ " | statValue: %s " % self.statValue
+        return "User " + self.userName + " | profile: " + self.profileURL + " | statValue: %d" % self.statValue

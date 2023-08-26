@@ -1,6 +1,6 @@
 import web
+
 from .crawler import Crawler
-import time
 
 render = web.template.render('interface/')
 

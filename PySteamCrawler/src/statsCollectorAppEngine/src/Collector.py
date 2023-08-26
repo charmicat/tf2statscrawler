@@ -4,8 +4,7 @@ from datetime import timedelta
 
 import lxml
 import lxml.etree
-
-from .ScoreContainer import ScoreContainer
+from ScoreContainer import ScoreContainer
 
 
 # from lxml.html import parse
@@ -33,6 +32,7 @@ class Collector:
 
     def getStatsFromGroupProfile(self, URL):
         self.URL = URL
+
         page = lxml.etree.parse(URL + "/memberslistxml/?xml=1", self.parser).getroot()
 
         totalPages = int(page.find("totalPages").text)
@@ -58,6 +58,7 @@ class Collector:
     def getStatsFromUserProfile(self, Id):
         statsURL = ("http://steamcommunity.com/profiles/%s/stats/tf2/?xml=1") % Id
 
+
         page = lxml.etree.parse(statsURL, self.parser).getroot()
 
         privacyState = page.find("privacyState")
@@ -78,19 +79,23 @@ class Collector:
                 continue
 
             for stat in self.selectedStats:
-                statData = int(classData.find(stat).text)
-                if self.filledStats.scoreByStat[stat][className].statValue < statData:
-                    self.filledStats.scoreByStat[stat][className].statValue = statData
+                try:
+                    statData = int(classData.find(stat).text)
+                    if self.filledStats.scoreByStat[stat][className].statValue < statData:
+                        self.filledStats.scoreByStat[stat][className].statValue = statData
 
-                    self.filledStats.scoreByStat[stat][className].iconURL = classIcon
+                        self.filledStats.scoreByStat[stat][className].iconURL = classIcon
 
-                    profileURL = ("http://steamcommunity.com/profiles/%s/?xml=1") % Id
-                    profile = lxml.etree.parse(profileURL, self.parser).getroot()
+                        profileURL = ("http://steamcommunity.com/profiles/%s/?xml=1") % Id
+                        profile = lxml.etree.parse(profileURL, self.parser).getroot()
 
-                    name = profile.find("steamID").text
-                    self.filledStats.scoreByStat[stat][className].userName = name
-                    self.filledStats.scoreByStat[stat][className].profileURL = (
-                                                                                   "http://steamcommunity.com/profiles/%s") % Id
+                        name = profile.find("steamID").text
+                        self.filledStats.scoreByStat[stat][className].userName = name
+                        self.filledStats.scoreByStat[stat][className].profileURL = ("http://steamcommunity.com/profiles/%s") % Id
+
+                except AttributeError:
+                    pass
+
 
     def printScore(self):
         print("Summary of stats for the group: " + self.URL)

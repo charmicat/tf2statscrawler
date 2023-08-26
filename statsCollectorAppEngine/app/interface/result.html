@@ -1,6 +1,5 @@
-$def with (stat=False)
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
@@ -33,7 +32,27 @@ $def with (stat=False)
         <td></td>
         <td>
             <div align="left">
-                <p>$:stat</p>
+                <p>
+                    Summary of stats for the group: <a href="{{ groupURL }}">{{ groupURL }} </a><br>
+                    <br></p>
+                {% for i, j in stats.scoreByStat.items %}
+                {% for k, l in j.items %}
+                {% if forloop.first %}
+                <b>__ Stat: </b> {{ l.statText }}
+                {% endif %}
+                <table class="userTable">
+                    <tr>
+                        <td><img src="{{ l.iconURL }}"></td>
+                        <td><br><b>Class: </b>{{ k }}<br>
+                            <b>User: </b>{{ l.userName }}<br>
+                            <b>Points: </b>{{ l.statValue }}<br>
+                            <b>URL: </b><a href="{{ l.profileURL }}">{{ l.profileURL }}</a><br><br></td>
+                    </tr>
+                </table>
+                {% endfor %}
+
+                {% endfor %}
+
             </div>
         </td>
         <td></td>

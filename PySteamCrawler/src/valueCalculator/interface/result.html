@@ -2,35 +2,35 @@ $def with (content)
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
-<title>Steam Account Value Calculator</title>
-<link href="static/style.css" rel="stylesheet" type="text/css" />
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>Steam Account Value Calculator</title>
+    <link href="static/style.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
-<table class="contentTable" align="center">
-	<tr class="title">
-		<td><br>
-		Steam Account Value Calculator<br>
-		</td>
-	</tr>
-	<tr class="shadow">
-		<td>&nbsp;</td>
-	</tr>
-	<tr class="contentBody">
-	<p>
-		<td>
-		<p>
-			<br>Value for Steam user <b>$:content.userID</b><br>
-			<br>
-			$for k, v in content.game_priceList.iteritems(): 
-				<b><a href="$:v.url">$:k:</a> </b>$:v.price<br>
-			<br>
-			<b>Total: </b> $$$:content.totalPrice <br><br>
-		</p>
-		</td>
-		</p>
-	</tr>
+<table align="center" class="contentTable">
+    <tr class="title">
+        <td><br>
+            Steam Account Value Calculator<br>
+        </td>
+    </tr>
+    <tr class="shadow">
+        <td>&nbsp;</td>
+    </tr>
+    <tr class="contentBody">
+        <p>
+            <td>
+        <p>
+            <br>Value for Steam user <b>$:content.userID</b><br>
+            <br>
+            $for k, v in content.game_priceList.iteritems():
+            <b><a href="$:v.url">$:k:</a> </b>$:v.price<br>
+            <br>
+            <b>Total: </b> $$$:content.totalPrice <br><br>
+        </p>
+        </td>
+        </p>
+    </tr>
 </table>
 </body>
 </html>

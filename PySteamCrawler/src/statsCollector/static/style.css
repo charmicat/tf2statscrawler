@@ -1,49 +1,51 @@
 @charset "utf-8";
 /* CSS Document */
 body {
-	background-color: #333333;
+    background-color: #333333;
 }
 
 .contentBody {
-	margin: 10px;
-	font-size: 12px;
-	color: #FFFFFF;
-	background-image: url('fundo_tabela.jpg');
+    margin: 10px;
+    font-size: 12px;
+    color: #FFFFFF;
+    background-image: url('fundo_tabela.jpg');
 }
+
 .title {
-	font-size: 24px;
-	font-weight: bold;
-	background-image: url('header_bg.png');
+    font-size: 24px;
+    font-weight: bold;
+    background-image: url('header_bg.png');
 }
+
 .contentTable {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	margin: auto;
-	color: #FFFFFF;
-/*	border: thin solid #999999;*/
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    margin: auto;
+    color: #FFFFFF;
+    /*	border: thin solid #999999;*/
 }
 
 .userTable {
-	border: none;
+    border: none;
 }
 
 .form INPUT {
-	border: thin solid #999999;
-	background-color: #333333;
+    border: thin solid #999999;
+    background-color: #333333;
 }
 
 .shadow {
-	background-image: url('header_shadow.png');
+    background-image: url('header_shadow.png');
 }
 
 a:link {
-	color: #F5AA2C;
+    color: #F5AA2C;
 }
 
 a:visited {
-	color: #cccccc;
+    color: #cccccc;
 }
 
 
 HR {
-	border: thin solid #999999;
+    border: thin solid #999999;
 }

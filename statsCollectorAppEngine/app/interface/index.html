@@ -45,16 +45,13 @@
                             </td>
                         </tr>
                         <tr align="left">
-                            <td><label> Stats _<br/>
+                            <td>Stats _<br/>
                                 <br/>
-                                <input id="maxPoints" name="stat_maxPoints" type="checkbox"
-                                       value="maxPoints"/> Max Points</label> <br/>
-                                <label> <input id="maxKills" name="stat_maxKills"
-                                               type="checkbox" value="maxKills"/> Max Kills</label> <br/>
-                                <label> <input id="maxDamage" name="stat_maxDamage"
-                                               type="checkbox" value="maxDamage"/> Max Damage</label> <br/>
-                                <label> <input id="longestLife" name="stat_longestLife"
-                                               type="checkbox" value="longestLife"/> Longest Life </label></td>
+                                {% for k, v in stats.items %}
+                                <label><input id="{{ v }}" name="stat" type="checkbox" value="{{ v }}"/> {{ k }}</label>
+                                <br/>
+                                {% endfor %}
+                            </td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
@@ -62,24 +59,11 @@
                         <tr align="left">
                             <td>
                                 <p>Classes _</p>
-                                <p><label> <input id="Medic" name="class_Medic"
-                                                  type="checkbox" value="Medic"/> Medic</label> <br/>
-                                    <label> <input id="Engineer" name="class_Engineer"
-                                                   type="checkbox" value="Engineer"/> Engineer</label> <br/>
-                                    <label> <input id="Pyro" name="class_Pyro"
-                                                   type="checkbox" value="Pyro"/> Pyro</label> <br/>
-                                    <label> <input id="Soldier" name="class_Soldier"
-                                                   type="checkbox" value="Soldier"/> Soldier</label> <br/>
-                                    <label> <input id="Demoman" name="class_Demoman"
-                                                   type="checkbox" value="Demoman"/> Demoman</label> <br/>
-                                    <label> <input id="Heavy" name="class_Heavy"
-                                                   type="checkbox" value="Heavy"/> Heavy</label> <br/>
-                                    <label> <input id="Spy" name="class_Spy" type="checkbox"
-                                                   value="Spy"/> Spy</label> <br/>
-                                    <label> <input id="Sniper" name="class_Sniper"
-                                                   type="checkbox" value="Sniper"/> Sniper</label> <br/>
-                                    <label> <input id="Scout" name="class_Scout"
-                                                   type="checkbox" value="Scout"/> Scout</label> <br/>
+                                <p>
+                                    {% for i in classes %}
+                                    <label> <input id="{{ i }}" name="class" type="checkbox" value="{{ i }}"/> {{ i
+                                        }}</label> <br/>
+                                    {% endfor %}
                                 </p>
                             </td>
                         </tr>

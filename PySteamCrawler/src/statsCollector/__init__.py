@@ -1,10 +1,11 @@
 # coding=utf-8
 
 import cProfile
+
 import web
-from .Collector import Collector
-import time
+
 from . import Constants
+from .Collector import Collector
 
 render = web.template.render('interface/')
 
