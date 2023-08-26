@@ -1,12 +1,13 @@
 # coding=utf-8
-
+import urllib.request
 from datetime import timedelta
 
 import lxml.etree
-from google.appengine.api import urlfetch
+# from google.appengine.api import urlfetch
+# from appengine_sdk.google_appengine.google.appengine.api import urlfetch
 
-import Constants
-from ScoreContainer import ScoreContainer
+from Helpers.crawler.Data import Constants
+from Helpers.crawler.ScoreContainer import ScoreContainer
 
 
 # from lxml.html import parse
@@ -14,96 +15,104 @@ from ScoreContainer import ScoreContainer
 
 class Collector:
 
-    def __init__(self, selectedStats, selectedClasses):
-        self.quantitySelectedStats = len(selectedStats)
+    def __init__(self, selected_stats, selected_classes):
+        self.quantitySelectedStats = len(selected_stats)
 
         self.totalUsers = 0
         self.totalUsersTF2 = 0
 
         self.onlySelectedClasses = dict()
 
-        for i in selectedClasses:
+        for i in selected_classes:
             self.onlySelectedClasses[i] = ""
 
-        self.selectedStats = selectedStats
+        self.selectedStats = selected_stats
 
-        self.filledStats = ScoreContainer(self.selectedStats, self.onlySelectedClasses)
+        self.filled_stats = ScoreContainer(self.selectedStats, self.onlySelectedClasses)
 
         self.URL = ""
         self.parser = lxml.etree.XMLParser(encoding='utf-8')
 
-    def getStatsFromGroupProfile(self, URL):
+    def get_stats_from_group_profile(self, URL):
         self.URL = URL
 
-        result = urlfetch.fetch(URL + "/memberslistxml/?xml=1")
-        page = lxml.etree.fromstring(result.content, self.parser)
+        # result = urlfetch.fetch(URL + "/memberslistxml/?xml=1")
+        with urllib.request.urlopen(URL + "/memberslistxml/?xml=1") as response:
+            result = response.read()
 
-        totalPages = int(page.find("totalPages").text)
+        page = lxml.etree.fromstring(result, self.parser)
+
+        total_pages = int(page.find("totalPages").text)
 
         self.totalUsers = page.find("memberCount").text
 
-        for i in range(totalPages):
+        for i in range(total_pages):
             # 1000 users per page, index starting at 0
 
             for userId in page.find("members"):
-                self.getStatsFromUserProfile(userId.text)
+                self.get_stats_from_user_profile(userId.text)
 
-            result = urlfetch.fetch((URL + "/memberslistxml/?xml=1&p=%d") % i)
-            page = lxml.etree.fromstring(result.content, self.parser)
+            # result = urlfetch.fetch((URL + "/memberslistxml/?xml=1&p=%d") % i)
+            with urllib.request.urlopen((URL + "/memberslistxml/?xml=1&p=%d") % i) as response:
+                result = response.read()
+            page = lxml.etree.fromstring(result, self.parser)
 
-        #        self.printScore()
+            self.printScore()
 
-        return self.filledStats
+        return self.filled_stats
 
-    def getStatsFromUserProfileList(self, URLList):
-        for url in URLList:
-            self.getStatFromUserProfile(url)
+    def get_stats_from_user_profile_list(self, url_list):
+        for url in url_list:
+            self.get_stats_from_user_profile(url)
 
-    def getStatsFromUserProfile(self, Id):
-        statsURL = ("http://steamcommunity.com/profiles/%s/stats/tf2/?xml=1") % Id
+    def get_stats_from_user_profile(self, Id):
+        stats_url = ("http://steamcommunity.com/profiles/%s/stats/tf2/?xml=1") % Id
 
         try:
-            result = urlfetch.fetch(statsURL)
-            page = lxml.etree.fromstring(result.content, self.parser)
+            # result = urlfetch.fetch(stats_url)
+            with urllib.request.urlopen(stats_url) as response:
+                result = response.read()
+            page = lxml.etree.fromstring(result, self.parser)
 
-            privacyState = page.find("privacyState")
+            privacy_state = page.find("privacyState")
 
-            if privacyState == None or privacyState.text == "private":
+            if privacy_state is None or privacy_state.text == "private":
                 # User doesn't have TF2 or profile is private
                 return
 
             self.totalUsersTF2 += 1
 
-            allClassesData = page.findall("stats/classData")
+            all_classes_data = page.findall("stats/classData")
 
-            for classData in allClassesData:
-                className = classData.find("className").text
-                classIcon = classData.find("classIcon").text
-                if className not in self.onlySelectedClasses:
+            for classData in all_classes_data:
+                class_name = classData.find("className").text
+                class_icon = classData.find("classIcon").text
+                if class_name not in self.onlySelectedClasses:
                     # class must not be parsed
                     continue
 
                 for stat in self.selectedStats:
                     try:
-                        statData = int(classData.find(stat).text)
-                        if self.filledStats.scoreByStat[stat][className].statValue < statData:
-                            self.filledStats.scoreByStat[stat][className].statValue = statData
+                        stat_data = int(classData.find(stat).text)
+                        if self.filled_stats.score_by_stat[stat][class_name].statValue < stat_data:
+                            self.filled_stats.score_by_stat[stat][class_name].statValue = stat_data
 
-                            self.filledStats.scoreByStat[stat][className].iconURL = classIcon
-                            self.filledStats.scoreByStat[stat][className].statText = Constants.availableStatsText[stat]
+                            self.filled_stats.score_by_stat[stat][class_name].iconURL = class_icon
+                            self.filled_stats.score_by_stat[stat][class_name].statText = Constants.availableStatsText[stat]
 
-                            result = urlfetch.fetch(("http://steamcommunity.com/profiles/%s/?xml=1") % Id)
+                            with urllib.request.urlopen("http://steamcommunity.com/profiles/%s/?xml=1" % Id) as response:
+                                result = response.read()
+                            # result = urlfetch.fetch("http://steamcommunity.com/profiles/%s/?xml=1" % Id)
                             profile = lxml.etree.fromstring(result.content, self.parser)
 
                             name = profile.find("steamID").text
-                            self.filledStats.scoreByStat[stat][className].userName = name
-                            self.filledStats.scoreByStat[stat][className].profileURL = (
-                                                                                           "http://steamcommunity.com/profiles/%s") % Id
+                            self.filled_stats.score_by_stat[stat][class_name].userName = name
+                            self.filled_stats.score_by_stat[stat][class_name].profileURL = ("http://steamcommunity.com/profiles/%s") % Id
                     except AttributeError:
                         pass
 
         except lxml.etree.XMLSyntaxError:
-            print(statsURL)
+            print(stats_url)
 
     def printScore(self):
         print("Summary of stats for the group: " + self.URL)
@@ -111,14 +120,14 @@ class Collector:
         print("Total users who play TF2: %s" % self.totalUsersTF2)
         print("\n")
 
-        for stat in self.filledStats.scoreByStat:
+        for stat in self.filled_stats.score_by_stat:
             print(stat)
-            print(self.filledStats.scoreByStat[stat])
+            print(self.filled_stats.score_by_stat[stat])
 
-    def parseTime(self, timeString):
+    def parseTime(self, time_string):
         time = timedelta()
 
-        toks = timeString.split(":")
+        toks = time_string.split(":")
 
         if len(toks) == 3:
             time = timedelta(hours=int(toks[0]), minutes=int(toks[1]), seconds=int(toks[2]))
@@ -132,4 +141,4 @@ if __name__ == '__main__':
     a = Collector(["iplaytime", "playtimeSeconds"], dict({"Soldier": True, "Spy": False, "Scout": False,
                                                           "Medic": False, "Engineer": True, "Demoman": False,
                                                           "Heavy": False, "Pyro": False, "Sniper": False}))
-    a.getStatsFromGroupProfile("http://steamcommunity.com/groups/sdstf2")
+    a.get_stats_from_group_profile("http://steamcommunity.com/groups/sdstf2")

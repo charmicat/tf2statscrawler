@@ -18,18 +18,17 @@
 import os
 import wsgiref
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp import template
+import webapp2
+# from google.appengine.ext import webapp
+from django import template
 
-# import import_wrapper
-# from Collector import Collector
-from Helpers.crawler import Collector
-from Helpers.crawler import Constants
+from Helpers.crawler.Data import Constants
+from Helpers.crawler.Collector import Collector
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 
-class MainHandler(webapp.RequestHandler):
+class MainHandler(webapp2.RequestHandler):
     def get(self):
         path = os.path.dirname(__file__) + '/interface/index.html'
         #        self.response.headers['Content-Type'] = 'text/plain'
@@ -49,15 +48,20 @@ class MainHandler(webapp.RequestHandler):
             self.response.out.write("<center>You need to specify a group URL!</center><br>")
             return
 
-        c = Collector(selected_stats, selected_classes)
-        filled_stats = c.getStatsFromGroupProfile(self.groupURL)
+        c = Collector(["iplaytime", "playtimeSeconds"], dict({"Soldier": True, "Spy": False, "Scout": False,
+                                                              "Medic": False, "Engineer": True, "Demoman": False,
+                                                              "Heavy": False, "Pyro": False, "Sniper": False}))
+        filled_stats = c.get_stats_from_group_profile("http://steamcommunity.com/groups/sdstf2")
+
+        # c = Collector(selected_stats, selected_classes)
+        # filled_stats = c.get_stats_from_group_profile(self.groupURL)
 
         path = os.path.dirname(__file__) + '/interface/result.html'
         self.response.write(str(template.render(path, {"stats": filled_stats, "groupURL": group_url,
                                                        "statsName": Constants.availableStatsText})))
 
 
-class ResultHandler(webapp.RequestHandler):
+class ResultHandler(webapp2.RequestHandler):
 
     def get(self):
         path = os.path.dirname(__file__) + '/interface/result.html'
@@ -65,8 +69,8 @@ class ResultHandler(webapp.RequestHandler):
         self.response.write(str(template.render(path, Constants.availableStats)))
 
 
-application = webapp.WSGIApplication([('/', MainHandler), ('/results', ResultHandler)],
-                                     debug=True)
+application = webapp2.WSGIApplication([('/', MainHandler), ('/results', ResultHandler)],
+                                      debug=True)
 
 
 def main():

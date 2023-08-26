@@ -81,17 +81,17 @@ class Collector:
             for stat in self.selectedStats:
                 try:
                     statData = int(classData.find(stat).text)
-                    if self.filledStats.scoreByStat[stat][className].statValue < statData:
-                        self.filledStats.scoreByStat[stat][className].statValue = statData
+                    if self.filledStats.score_by_stat[stat][className].statValue < statData:
+                        self.filledStats.score_by_stat[stat][className].statValue = statData
 
-                        self.filledStats.scoreByStat[stat][className].iconURL = classIcon
+                        self.filledStats.score_by_stat[stat][className].iconURL = classIcon
 
                         profileURL = ("http://steamcommunity.com/profiles/%s/?xml=1") % Id
                         profile = lxml.etree.parse(profileURL, self.parser).getroot()
 
                         name = profile.find("steamID").text
-                        self.filledStats.scoreByStat[stat][className].userName = name
-                        self.filledStats.scoreByStat[stat][className].profileURL = ("http://steamcommunity.com/profiles/%s") % Id
+                        self.filledStats.score_by_stat[stat][className].userName = name
+                        self.filledStats.score_by_stat[stat][className].profileURL = ("http://steamcommunity.com/profiles/%s") % Id
 
                 except AttributeError:
                     pass
@@ -103,9 +103,9 @@ class Collector:
         print("Total users who play TF2: %s" % self.totalUsersTF2)
         print("\n")
 
-        for stat in self.filledStats.scoreByStat:
+        for stat in self.filledStats.score_by_stat:
             print(stat)
-            print(self.filledStats.scoreByStat[stat])
+            print(self.filledStats.score_by_stat[stat])
 
     def parseTime(self, timeString):
         time = timedelta()

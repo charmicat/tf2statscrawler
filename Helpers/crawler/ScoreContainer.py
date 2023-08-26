@@ -1,14 +1,14 @@
 # coding=utf-8
 
-class Data:
-    def __init__(self, userName="", profileURL="", statValue=-1, iconURL=""):
-        self.userName = userName
-        self.profileURL = profileURL
+class UserData:
+    def __init__(self, user_name="", profile_url="", stat_value=-1, icon_url=""):
+        self.userName = user_name
+        self.profileURL = profile_url
 
-        self.statValue = statValue
+        self.statValue = stat_value
         self.statText = ""
 
-        self.iconURL = iconURL
+        self.iconURL = icon_url
 
     def __repr__(self):
         return "User " + self.userName + " | profile: " + self.profileURL + " | statValue: %d" % self.statValue + " | statName:" + self.statText
@@ -16,15 +16,15 @@ class Data:
 
 class ScoreContainer:
 
-    def __init__(self, selectedStats, selectedClasses):
-        self.scoreByStat = dict()
+    def __init__(self, selected_stats, selected_classes):
+        self.score_by_stat = dict()
 
-        for stat in selectedStats:
-            classData = dict()
-            for c in selectedClasses:
-                classData[c] = Data()
+        for stat in selected_stats:
+            class_data = dict()
+            for c in selected_classes:
+                class_data[c] = UserData()
 
-            self.scoreByStat[stat] = classData
+            self.score_by_stat[stat] = class_data
 
     def __repr__(self):
-        return self.scoreByStat.__repr__()
+        return self.score_by_stat.__repr__()
