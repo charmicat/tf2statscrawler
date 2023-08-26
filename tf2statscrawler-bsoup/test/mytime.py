@@ -9,11 +9,11 @@ def main():
     pTime2 = parseTime(timeS2)
     
     if pTime1 > pTime2:
-        print "time 1 é maior"
+        print("time 1 é maior")
     else:
-        print "time 2 é maior"
+        print("time 2 é maior")
         
-    print type(pTime1)
+    print((type(pTime1)))
     
 
 

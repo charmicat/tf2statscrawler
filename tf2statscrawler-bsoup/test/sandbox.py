@@ -3,7 +3,7 @@
 from BeautifulSoup import BeautifulSoup
 from BeautifulSoup import SoupStrainer 
 from ScoreContainer import ScoreContainer
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import re
 import copy
 
@@ -13,7 +13,7 @@ def main():
     statsURL = URL + "/stats/TF2"
     selectedStats = ["maxPoints", "maxDamage", "maxKills"]
     
-    statsProfile = urllib.urlopen(statsURL).read()
+    statsProfile = urllib.request.urlopen(statsURL).read()
            
     filledStats = {}
         
@@ -31,13 +31,13 @@ def main():
         #usuario nao tem TF2!
         pass
 
-    print userName
+    print(userName)
     divClasses = copy.copy(selectedStats) #copy pra divClasses nao referenciar o mesmo objeto -_-
     divClasses.append("className")
     
     foundStats = dict()
     for statVal in statsBS.findAll("div", {"class":divClasses}):
-        print statVal.attrs
+        print((statVal.attrs))
         if statVal.attrs[0][1] == 'className':
             className = statVal.decodeContents().strip()
             if len(foundStats) != len(selectedStats):
@@ -55,23 +55,23 @@ def main():
             foundStats[statVal.attrs[0][1]] = valuePoints
             
             
-    print "Summary of stats for the group: " + URL
-    print "\n"
+    print(("Summary of stats for the group: " + URL))
+    print("\n")
     
     for stat in filledStats:
-        print "*** Stat: " + stat
-        print ""
+        print(("*** Stat: " + stat))
+        print("")
 
         for classStats in filledStats[stat].statByClass:
             currentClass = filledStats[stat].statByClass[classStats]
             
-            print "Class: " + classStats
-            print "User: " + currentClass.userName
-            print "Points: %s" % currentClass.statValue
-            print "URL: " + currentClass.profileURL
-            print ""
+            print(("Class: " + classStats))
+            print(("User: " + currentClass.userName))
+            print(("Points: %s" % currentClass.statValue))
+            print(("URL: " + currentClass.profileURL))
+            print("")
             
-        print "-----------------------------"                        
+        print("-----------------------------")                        
     
 
 if __name__ == '__main__':

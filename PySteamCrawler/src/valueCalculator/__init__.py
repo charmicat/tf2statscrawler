@@ -1,8 +1,8 @@
 # coding=utf-8
 
 import web
-from ValueCalculator import ValueCalculator
-from ValueCalculator import PriceDataStructure
+from .ValueCalculator import ValueCalculator
+from .ValueCalculator import PriceDataStructure
 
 render = web.template.render('interface/')
 
@@ -35,7 +35,7 @@ def main():
     calculator = ValueCalculator("http://steamcommunity.com/id/diogocme")
     ds = calculator.calculate()
     
-    print ds
+    print(ds)
     
 if __name__ == '__main__':
     app.run()

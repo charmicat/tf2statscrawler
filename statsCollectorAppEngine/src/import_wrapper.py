@@ -7,7 +7,7 @@ try:
     
     # We don't need to worry since the pwd will be the same as __file__.
     root = ''
-except ImportError, e:
+except ImportError as e:
     # Don't show warnings for libs found in the apps lib directory that are also
     #  installed in site-packages or via setuptools.
     import warnings

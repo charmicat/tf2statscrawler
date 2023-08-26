@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from Crawler import Crawler
+from .Crawler import Crawler
 import cProfile
 
 def real_main ():
@@ -21,7 +21,7 @@ def real_main ():
 
 def main():
     import logging
-    import cProfile, pstats, StringIO
+    import cProfile, pstats, io
     logger = logging.getLogger('myapp')
     hdlr = logging.FileHandler('var/myapp.log')
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -33,7 +33,7 @@ def main():
  # We've renamed our original main() above to real_main()
     prof = cProfile.Profile()
     prof = prof.runctx("real_main()", globals(), locals())
-    stream = StringIO.StringIO()
+    stream = io.StringIO()
     stats = pstats.Stats(prof, stream=stream)
     stats.sort_stats("time")  # Or cumulative
     stats.print_stats(10000)  # 80 = how many to print

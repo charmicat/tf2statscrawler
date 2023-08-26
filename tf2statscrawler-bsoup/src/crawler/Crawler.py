@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from ScoreContainer import ScoreContainer
+from .ScoreContainer import ScoreContainer
 from lxml.html import parse
 from lxml.etree import HTMLParser
 from datetime import timedelta
@@ -91,7 +91,7 @@ class Crawler:
                 if not self.selectedClasses[className]: # otimizar isso (?), so recuperar as classes necessarias 
                     continue
                 if len(foundStats) != self.quantitySelectedStats:
-                    print "Erro de parsing"
+                    print("Erro de parsing")
                     break
                 else:
                     for st in foundStats:
@@ -118,26 +118,26 @@ class Crawler:
                 foundStats[currentDivClass] = valuePoints
 
     def printScore(self):
-        print "Summary of stats for the group: " + self.URL
-        print "Total users: %s" % self.totalUsers
-        print "Total users who play TF2: %s" % self.totalUsersTF2
-        print "\n"
+        print(("Summary of stats for the group: " + self.URL))
+        print(("Total users: %s" % self.totalUsers))
+        print(("Total users who play TF2: %s" % self.totalUsersTF2))
+        print("\n")
         
         for stat in self.filledStats:
-            print "*** Stat: " + stat
-            print ""
+            print(("*** Stat: " + stat))
+            print("")
 
             for classStats in self.filledStats[stat].statByClass:
                 currentClass = self.filledStats[stat].statByClass[classStats]
 
                 if currentClass.statValue != - 1:
-                    print "Class: " + classStats
-                    print "User: " + currentClass.userName
-                    print "Points: %s" % currentClass.statValue
-                    print "URL: " + currentClass.profileURL
-                    print ""
+                    print(("Class: " + classStats))
+                    print(("User: " + currentClass.userName))
+                    print(("Points: %s" % currentClass.statValue))
+                    print(("URL: " + currentClass.profileURL))
+                    print("")
                 
-            print "-----------------------------"
+            print("-----------------------------")
             
     def parseTime(self, timeString):
         time = timedelta()

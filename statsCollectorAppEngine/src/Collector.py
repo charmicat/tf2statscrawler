@@ -80,7 +80,7 @@ class Collector:
             for classData in allClassesData:
                 className = classData.find("className").text
                 classIcon = classData.find("classIcon").text
-                if not self.onlySelectedClasses.has_key(className): 
+                if className not in self.onlySelectedClasses: 
                 # class must not be parsed
                     continue
             
@@ -103,18 +103,18 @@ class Collector:
                         pass
                         
         except lxml.etree.XMLSyntaxError:
-            print statsURL
+            print(statsURL)
 
 
     def printScore(self):
-        print "Summary of stats for the group: " + self.URL
-        print "Total users: %s" % self.totalUsers
-        print "Total users who play TF2: %s" % self.totalUsersTF2
-        print "\n"
+        print(("Summary of stats for the group: " + self.URL))
+        print(("Total users: %s" % self.totalUsers))
+        print(("Total users who play TF2: %s" % self.totalUsersTF2))
+        print("\n")
         
         for stat in self.filledStats.scoreByStat:
-            print stat
-            print self.filledStats.scoreByStat[stat]
+            print(stat)
+            print((self.filledStats.scoreByStat[stat]))
         
             
     def parseTime(self, timeString):

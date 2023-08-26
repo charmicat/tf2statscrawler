@@ -4,9 +4,9 @@
 
 from BeautifulSoup import BeautifulSoup
 from BeautifulSoup import SoupStrainer 
-from ScoreContainer import ScoreContainer
+from .ScoreContainer import ScoreContainer
 import Constants
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import re
 import copy
 import time
@@ -28,7 +28,7 @@ class Crawler:
     
     def getStatsFromGroupProfile(self, URL):
         self.URL = URL
-        page = urllib.urlopen(URL).read()
+        page = urllib.request.urlopen(URL).read()
         
         ss = SoupStrainer('a')
         bs = BeautifulSoup(page, parseOnlyThese=ss)
@@ -52,7 +52,7 @@ class Crawler:
         divClasses += ["className", "returnLink"]
         
         statsURL = URL + "/stats/TF2"
-        statsProfile = urllib.urlopen(statsURL).read()
+        statsProfile = urllib.request.urlopen(statsURL).read()
             
         ss = SoupStrainer('div', {"class":divClasses})
         statsBS = BeautifulSoup(statsProfile, parseOnlyThese=ss)
@@ -68,7 +68,7 @@ class Crawler:
                 if not self.selectedClasses[className]:
                     continue
                 if len(foundStats) != len(self.selectedStats):
-                    print "Erro no parsing"
+                    print("Erro no parsing")
                     break
                 else:
                     for st in foundStats:
@@ -101,7 +101,7 @@ class Crawler:
         divClasses += ["className", "returnLink"]
         
         statsURL = URL + "/stats/TF2"
-        statsProfile = urllib.urlopen(statsURL).read()
+        statsProfile = urllib.request.urlopen(statsURL).read()
             
         ss = SoupStrainer(['div', 'h2', 'h1'])
         statsBS = BeautifulSoup(statsProfile, parseOnlyThese=ss)
@@ -116,7 +116,7 @@ class Crawler:
         # checando se userName é o melhor em cada stat
         # TODO: melhorar isso, seria melhor pegar todos os stats de uma vez, nao fazer uma busca
         # diferente pra cada stat
-        for currentStat in self.filledStats.keys():
+        for currentStat in list(self.filledStats.keys()):
             className = ""
             valuePoints = 0
             
@@ -147,24 +147,24 @@ class Crawler:
                         valuePoints = 0
 
     def printScore(self):
-        print "Summary of stats for the group: " + self.URL
-        print "\n"
+        print(("Summary of stats for the group: " + self.URL))
+        print("\n")
         
         for stat in self.filledStats:
-            print "*** Stat: " + stat
-            print ""
+            print(("*** Stat: " + stat))
+            print("")
 
             for classStats in self.filledStats[stat].statByClass:
                 currentClass = self.filledStats[stat].statByClass[classStats]
                 
                 if currentClass.statValue != 0:
-                    print "Class: " + classStats
-                    print "User: " + currentClass.userName
-                    print "Points: %s" % self.formatStatValue(currentClass.statValue)
-                    print "URL: " + currentClass.profileURL
-                    print ""
+                    print(("Class: " + classStats))
+                    print(("User: " + currentClass.userName))
+                    print(("Points: %s" % self.formatStatValue(currentClass.statValue)))
+                    print(("URL: " + currentClass.profileURL))
+                    print("")
                 
-            print "-----------------------------"     
+            print("-----------------------------")     
             
     def formatStatValue(self, value):
         if type(value).__name__ != "int":

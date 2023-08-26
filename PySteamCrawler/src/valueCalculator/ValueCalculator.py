@@ -5,9 +5,9 @@ from lxml.etree import HTMLParser
 from lxml.cssselect import CSSSelector
 from lxml import etree
 
-import urllib, urllib2, cookielib
+import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse, http.cookiejar
 
-from StringIO import StringIO
+from io import StringIO
 
 class GameInfo:
     def __init__(self):
@@ -22,7 +22,7 @@ class PriceDataStructure:
         
     def __repr__(self):
         str += self.userID + "\n\n"
-        for k, v in self.game_priceList.iteritems():
+        for k, v in self.game_priceList.items():
             str += k + ": " + v + "\n"
             
         str += "\nTotal: $%.2f" % self.totalPrice
@@ -62,9 +62,9 @@ class ValueCalculator:
                 continue
             
             if gamePage.base.find("agecheck") != -1:
-                cj = cookielib.CookieJar()
-                opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-                login_data = urllib.urlencode({'ageDay' : ageDay, 'ageMonth' : ageMonth, 'ageYear' : ageYear})
+                cj = http.cookiejar.CookieJar()
+                opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+                login_data = urllib.parse.urlencode({'ageDay' : ageDay, 'ageMonth' : ageMonth, 'ageYear' : ageYear})
                 resp1 = opener.open(gamePage.base, login_data)
                 resp = opener.open(gameUrl).read()
                 
@@ -89,7 +89,7 @@ class ValueCalculator:
             for x in title.itertext():
                 if len(x.strip()) > 0:
                     title = x.strip()
-                    if not titles.has_key(title):
+                    if title not in titles:
                         priceDS.game_priceList[title] = GameInfo()
                     else:
                         repeat = 1
@@ -116,7 +116,7 @@ class ValueCalculator:
                     priceDS.game_priceList[title].price = div.text.strip()
                     priceDS.game_priceList[title].url = gameUrl
                     
-                    print title + " - " + priceDS.game_priceList[title].price
+                    print(title + " - " + priceDS.game_priceList[title].price)
                         
                     price = div.text.strip().strip("$").strip(" USD")
                     try:

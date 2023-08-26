@@ -5,10 +5,10 @@ from lxml.etree import HTMLParser
 from lxml.cssselect import CSSSelector
 from lxml import etree
 
-import urllib, urllib2, cookielib
+import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse, http.cookiejar
 
 import string
-from StringIO import StringIO
+from io import StringIO
 
 def main():
     URL = "http://steamcommunity.com/id/viniciusfs"
@@ -34,9 +34,9 @@ def main():
         gamePage = parse(gameUrl, parser).getroot()
         
         if gamePage.base.find("agecheck") != -1:
-            cj = cookielib.CookieJar()
-            opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-            login_data = urllib.urlencode({'ageDay' : ageDay, 'ageMonth' : ageMonth, 'ageYear' : ageYear})
+            cj = http.cookiejar.CookieJar()
+            opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+            login_data = urllib.parse.urlencode({'ageDay' : ageDay, 'ageMonth' : ageMonth, 'ageYear' : ageYear})
             resp1 = opener.open(gamePage.base, login_data)
             resp = opener.open(gameUrl).read()
             
@@ -49,8 +49,8 @@ def main():
         repeat = 0
         for a in title:
             title = a.text.replace(" on Steam", "")
-            if not titles.has_key(title):
-                print title
+            if title not in titles:
+                print(title)
                 titles[title] = 1;
             else:
                 repeat = 1
@@ -67,7 +67,7 @@ def main():
             
             if found == 1: #don't want the other prices, only the first one
                 price = div.text.strip().strip("$").strip(" USD")
-                print price
+                print(price)
                 try:
                     totalPrice = totalPrice + float(price)
                 except ValueError: #Free games have a "Free" price
@@ -75,7 +75,7 @@ def main():
             else:
                 break
         
-    print "Total value %f2" % totalPrice
+    print("Total value %f2" % totalPrice)
             
 if __name__ == '__main__':
     main()

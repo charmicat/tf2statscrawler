@@ -33,7 +33,7 @@ class MainHandler(webapp.RequestHandler):
         path = os.path.dirname(__file__) + '/interface/index.html'
         #        self.response.headers['Content-Type'] = 'text/plain'
         self.response.write(
-            unicode(template.render(path, {"stats": Constants.availableStats, "classes": Constants.availableClasses})))
+            str(template.render(path, {"stats": Constants.availableStats, "classes": Constants.availableClasses})))
 
     def post(self):
         groupURL = self.request.get("groupURL")
@@ -52,7 +52,7 @@ class MainHandler(webapp.RequestHandler):
         filledStats = c.getStatsFromGroupProfile(groupURL)
 
         path = os.path.dirname(__file__) + '/interface/result.html'
-        self.response.write(unicode(template.render(path, {"stats": filledStats, "groupURL": groupURL,
+        self.response.write(str(template.render(path, {"stats": filledStats, "groupURL": groupURL,
                                                            "statsName": Constants.availableStatsText})))
 
 
@@ -61,7 +61,7 @@ class ResultHandler(webapp.RequestHandler):
     def get(self):
         path = os.path.dirname(__file__) + '/interface/result.html'
         #        self.response.headers['Content-Type'] = 'text/plain'
-        self.response.write(unicode(template.render(path, Constants.availableStats)))
+        self.response.write(str(template.render(path, Constants.availableStats)))
 
 
 app = webapp.WSGIApplication([('/', MainHandler), ('/results', ResultHandler)],
