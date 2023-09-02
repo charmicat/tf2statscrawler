@@ -2,5 +2,5 @@ web.py~=0.62
 setuptools~=68.1.2
 lxml~=4.9.3
 Django~=4.2.4
-requests~=2.28.2
+requests~=2.31.0
 webapp2~=3.0.0b1
