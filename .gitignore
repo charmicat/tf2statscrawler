@@ -22,3 +22,6 @@
 /tf2statscrawler-bsoup/src/crawler/ScoreContainer.py.bak
 /PySteamCrawler/test/testeCooki.py.bak
 /PySteamCrawler/src/valueCalculator/ValueCalculator.py.bak
+*.py.bak
+__pycache__
+.svn
